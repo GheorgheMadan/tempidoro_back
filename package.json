@@ -1,0 +1,20 @@
+{
+  "name": "tempidoro_back",
+  "version": "1.0.0",
+  "description": "backend di tempi d'oro",
+  "license": "ISC",
+  "author": "Gheorghe Madan",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.1.0",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1",
+    "node-fetch": "^3.3.2"
+  }
+}
