@@ -1,10 +1,7 @@
 Rotte del server: 
 
 GET DI TUTTI I PRODOTTI FILTRATI PER CATEGORIA:
-http://localhost:3000/api/products?categoria=occhiali_da_sole&limit=20&offset=0
-
-con limit=20 vedo solo 20 prodotti alla volta
-con offset=0 prendo i primi 20 prodotti, con offset 20 salto i primi 20 e mostro i seguenti 20 prodotti e cosi via
+http://localhost:3000/api/products?categoria=Orologi&limit=40&offset=0
 
 categorie esistenti:
 - portachiavi
@@ -23,30 +20,51 @@ categorie esistenti:
 - orologi_da_parete
 
 GET DEI PRODOTTI CHE SONO IN SCONTO OPPURE SONO NUOVI 
-http://localhost:3000/api/products/new-or-discounted?limit=20&offset=0
+
 
 GET DEI PRODOTTI RICERCATI PER NOME E FILTRATI PER CATEGORIA
 http://localhost:3000/api/products/search?search=bracciale&categoria=bracciali&limit=20&offset=0
 
-GET DEI PRODOTTI RICERCATI PER NOME 
-http://localhost:3000/api/products/search?search=Occhiali&limit=20&offset=0
-
-GET DEI PRODOTTI FILTRATI PER CATEGORIA 
-http://localhost:3000/api/products/search?search&categoria=anelli&limit=20&offset=0
+GET DEI PRODOTTI RICERCATI PER NOME search
+http://localhost:3000/api/products?categoria=Orologi&limit=40&offset=0&search=nome prodotto
 
 GET DEL PRODOTTO PER ID 
 http://localhost:3000/api/products/1
 
 
 filtri
-* prezzo crescente 
-http://localhost:3000/api/products?categoria=occhiali_da_sole&limit=20&offset=0&order=price-asc
+Ordinamento
+GET http://localhost:3000/api/products?categoria=Orologi&limit=40&offset=0&order=name_asc
+GET http://localhost:3000/api/products?categoria=Orologi&limit=40&offset=0&order=name_desc
 
-* prezzo decrescente 
-http://localhost:3000/api/products?categoria=occhiali_da_sole&limit=20&offset=0&order=price-desc
+* prezzo ordine crescente 
+http://localhost:3000/api/products?categoria=Orologi&limit=40&offset=0&order=price_asc
 
-* nome ordine crescente 
-http://localhost:3000/api/products?categoria=occhiali_da_sole&limit=20&offset=0&order=name-asc
+* prezzo ordine decrescente 
+http://localhost:3000/api/products?categoria=Orologi&limit=40&offset=0&order=price_desc
 
-* nome ordine decrescente 
-http://localhost:3000/api/products?categoria=occhiali_da_sole&limit=20&offset=0&order=name-desc
+Filtri comuni
+
+Per brand
+GET http://localhost:3000/api/products?categoria=Orologi&limit=40&offset=0&brand=Brosway
+
+
+Solo in promozione
+GET http://localhost:3000/api/products?categoria=Orologi&limit=40&offset=0&isPromo=true
+
+
+Solo novità
+GET http://localhost:3000/api/products?categoria=Orologi&limit=40&offset=0&isNew=true
+
+
+Solo in evidenza
+GET http://localhost:3000/api/products?categoria=Orologi&limit=40&offset=0&isEvidence=true
+
+Orologi (cassa)
+GET http://localhost:3000/api/products?categoria=Orologi&limit=40&offset=0&materiale_cassa=acciaio&tipologia_movimento=auto
+
+Occhiali (tipo lenti)
+GET http://localhost:3000/api/products?categoria=Occhiali da sole&limit=40&offset=0&tipo_lenti=Laser Ultra HD
+
+Preziosi (modello)
+GET http://localhost:3000/api/products?categoria=Preziosi&limit=40&offset=0&modello_gioielleria=pendente

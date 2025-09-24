@@ -9,8 +9,6 @@ const {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Funzione per mostrare i prodotti in base alla categoria
 // Questa funzione gestisce la richiesta GET per ottenere i prodotti filtrati per categoria
-// Questa funzione gestisce la richiesta GET per ottenere i prodotti filtrati per categoria
-
 const getProducts = async (req, res) => {
   // Estrai categoria, limit e offset dai parametri della query
   const {
@@ -35,7 +33,8 @@ const getProducts = async (req, res) => {
     tipologia_movimento,
     tipologia_cinturino,
     misura_anello,
-    pietre
+    pietre,
+    tipo_lenti
   } = req.query;
 
   const isGlobal = !categoria;
@@ -44,6 +43,11 @@ const getProducts = async (req, res) => {
   const { join, fields } = isGlobal ? { join: "", fields: "" } : getCategoryQueryParts(categoria);
 
   const params = isGlobal ? [] : [categoria];
+
+  const normalizeCategoria = (categoria || '')
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '_')
 
   let filters = "";
 
@@ -121,7 +125,7 @@ const getProducts = async (req, res) => {
   }
 
   // FILTRI CATEGORIA OROLOGI
-  if (categoria === "orologi" || categoria === 'outlet') {
+  if (categoria === "Orologi" || categoria === 'Outlet') {
     if (materiale_cassa) {
       filters += ` AND LOWER(materiale_cassa.name) = LOWER(?)`;
       params.push(materiale_cassa);
@@ -133,7 +137,7 @@ const getProducts = async (req, res) => {
   }
 
   // FILTRI CATEGORIA OROLOGI E CINTURINI
-  if (categoria === "orologi" || categoria === 'cinturini' || categoria === 'outlet') {
+  if (categoria === "Orologi" || categoria === 'Cinturini' || categoria === 'Outlet') {
     if (materiale_cinturino) {
       filters += ` AND LOWER(materiale_cinturino.name) = LOWER(?)`;
       params.push(materiale_cinturino);
@@ -145,7 +149,7 @@ const getProducts = async (req, res) => {
   }
 
   // FILTRI CATEGORIA CINTURINI
-  if (categoria === 'cinturini' || categoria === 'outlet') {
+  if (categoria === 'Cinturini' || categoria === 'Outlet') {
     if (misura_ansa) {
       filters += ` AND LOWER(misura_ansa.name) = LOWER(?)`;
       params.push(misura_ansa);
@@ -154,15 +158,15 @@ const getProducts = async (req, res) => {
 
   // FILTRI GIOIELLERIA 
   if (
-    categoria === 'anelli' ||
-    categoria === 'bracciali' ||
-    categoria === 'cavigliere' ||
-    categoria === 'ciondoli' ||
-    categoria === 'collane' ||
-    categoria === 'orecchini' ||
-    categoria === 'portachiavi' ||
-    categoria === 'preziosi' ||
-    categoria === 'outlet'
+    categoria === 'Anelli' ||
+    categoria === 'Bracciali' ||
+    categoria === 'Cavigliere' ||
+    categoria === 'Ciondoli' ||
+    categoria === 'Collane' ||
+    categoria === 'Orecchini' ||
+    categoria === 'Portachiavi' ||
+    categoria === 'Preziosi' ||
+    categoria === 'Outlet'
   ) {
     if (pietre) {
       filters += ` AND LOWER(pietre.name) = LOWER(?)`;
@@ -171,10 +175,17 @@ const getProducts = async (req, res) => {
   }
 
   // categoria anelli e outlet
-  if (categoria === 'anelli' || categoria === 'outlet') {
+  if (categoria === 'Anelli' || categoria === 'Outlet') {
     if (misura_anello) {
       filters += ` AND LOWER(misura_anello.name) = LOWER(?)`;
       params.push(misura_anello);
+    }
+  }
+
+  if (normalizeCategoria === 'occhiali_da_sole' || normalizeCategoria === 'montature_da_vista' || categoria === 'Outlet') {
+    if (tipo_lenti) {
+      filters += ` AND LOWER(tipo_lenti.name) = LOWER(?)`;
+      params.push(tipo_lenti);
     }
   }
 
@@ -226,7 +237,7 @@ const getProducts = async (req, res) => {
 
     // Se non ci sono risultati, restituisci errore 404 (Not Found)
     if (results.length === 0) {
-      return res.status(404).json({ error: 'Nessun prodotto trovato per questa categoria' });
+      return res.status(200).json({ error: 'Nessun prodotto trovato per questa categoria' });
     }
 
     // 👇 eseguo la query di conteggio con await
@@ -267,7 +278,7 @@ const showProduct = async (req, res) => {
   `;
 
   try {
-    // 👇 eseguo la query con await (client promise, niente callback)
+    // eseguo la query con await (client promise, niente callback)
     const [catRows] = await connection.query(getCategorySql, [id]);
 
     if (catRows.length === 0) {
@@ -295,7 +306,6 @@ const showProduct = async (req, res) => {
     `;
 
     // 5) Esecuzione
-    // 👇 eseguo anche questa con await
     const [results] = await connection.query(query, [id]);
 
     if (results.length === 0) {
@@ -307,7 +317,6 @@ const showProduct = async (req, res) => {
 
     res.json(product);
   } catch (err) {
-    // 👇 gestione errori centralizzata
     console.error('❌ Errore durante la query prodotto/categoria:', err);
     return res.status(500).json({ error: 'Errore interno del server' });
   }

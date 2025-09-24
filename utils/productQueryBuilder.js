@@ -1,7 +1,7 @@
 // utils/productQueryBuilder.js
 
 const categoriaDettagli = {
-    orologi: {
+    "Orologi": {
         join: `LEFT JOIN orologi_detail ON products.id = orologi_detail.prodotto_id
                LEFT JOIN materiale_cassa ON materiale_cassa.id = orologi_detail.materiale_cassa_id
                LEFT JOIN materiale_cinturino ON materiale_cinturino.id = orologi_detail.materiale_cinturino_id
@@ -14,17 +14,17 @@ const categoriaDettagli = {
             'tipologia_cinturino.name AS tipologia_cinturino'
         ]
     },
-    montature_da_vista: {
+    "Montature da vista": {
         join: `LEFT JOIN occhiali_detail ON products.id = occhiali_detail.prodotto_id
                LEFT JOIN tipo_lenti ON tipo_lenti.id = occhiali_detail.tipo_lenti_id`,
         fields: ['tipo_lenti.name AS tipo_lenti']
     },
-    occhiali_da_sole: {
+    "Occhiali da sole": {
         join: `LEFT JOIN occhiali_detail ON products.id = occhiali_detail.prodotto_id
                LEFT JOIN tipo_lenti ON tipo_lenti.id = occhiali_detail.tipo_lenti_id`,
         fields: ['tipo_lenti.name AS tipo_lenti']
     },
-    anelli: {
+    "Anelli": {
         join: `LEFT JOIN gioielli_detail ON products.id = gioielli_detail.prodotto_id
                LEFT JOIN pietre ON pietre.id = gioielli_detail.pietre_id
                LEFT JOIN misura_anello ON misura_anello.id = gioielli_detail.misura_anello_id`,
@@ -33,37 +33,37 @@ const categoriaDettagli = {
             'misura_anello.name AS misura_anello'
         ]
     },
-    bracciali: {
+    "Bracciali": {
         join: `LEFT JOIN gioielli_detail ON products.id = gioielli_detail.prodotto_id
                LEFT JOIN pietre ON pietre.id = gioielli_detail.pietre_id`,
         fields: ['pietre.name AS pietre']
     },
-    collane: {
+    "Collane": {
         join: `LEFT JOIN gioielli_detail ON products.id = gioielli_detail.prodotto_id
                LEFT JOIN pietre ON pietre.id = gioielli_detail.pietre_id`,
         fields: ['pietre.name AS pietre']
     },
-    ciondoli: {
+    "Ciondoli": {
         join: `LEFT JOIN gioielli_detail ON products.id = gioielli_detail.prodotto_id
                LEFT JOIN pietre ON pietre.id = gioielli_detail.pietre_id`,
         fields: ['pietre.name AS pietre']
     },
-    orecchini: {
+    "Orecchini": {
         join: `LEFT JOIN gioielli_detail ON products.id = gioielli_detail.prodotto_id
                LEFT JOIN pietre ON pietre.id = gioielli_detail.pietre_id`,
         fields: ['pietre.name AS pietre']
     },
-    portachiavi: {
+    "Portachiavi": {
         join: `LEFT JOIN gioielli_detail ON products.id = gioielli_detail.prodotto_id
                LEFT JOIN pietre ON pietre.id = gioielli_detail.pietre_id`,
         fields: ['pietre.name AS pietre']
     },
-    cavigliere: {
+    "Cavigliere": {
         join: `LEFT JOIN gioielli_detail ON products.id = gioielli_detail.prodotto_id
                LEFT JOIN pietre ON pietre.id = gioielli_detail.pietre_id`,
         fields: ['pietre.name AS pietre']
     },
-    cinturini: {
+    "Cinturini": {
         join: `LEFT JOIN orologi_detail ON products.id = orologi_detail.prodotto_id
                LEFT JOIN misura_ansa ON misura_ansa.id = orologi_detail.misura_ansa_id
                LEFT JOIN tipologia_cinturino ON tipologia_cinturino.id = orologi_detail.tipologia_cinturino_id`,
@@ -72,8 +72,8 @@ const categoriaDettagli = {
             'tipologia_cinturino.name AS tipologia_cinturino'
         ]
     },
-    // ✅ SOLO GIOIELLERIA
-    preziosi: {
+    // SOLO GIOIELLERIA
+    "Preziosi": {
         join: `LEFT JOIN gioielli_detail ON products.id = gioielli_detail.prodotto_id
                LEFT JOIN pietre ON pietre.id = gioielli_detail.pietre_id
                LEFT JOIN misura_anello ON misura_anello.id = gioielli_detail.misura_anello_id
@@ -84,8 +84,8 @@ const categoriaDettagli = {
             'modello_gioielleria.name AS modello_gioielleria'
         ]
     },
-    // ✅ OUTLET: include dettagli OROLOGI + GIOIELLI + OCCHIALI
-    outlet: {
+    // OUTLET: include dettagli OROLOGI + GIOIELLI + OCCHIALI
+    "Outlet": {
         join: `LEFT JOIN orologi_detail ON products.id = orologi_detail.prodotto_id
                LEFT JOIN materiale_cassa ON materiale_cassa.id = orologi_detail.materiale_cassa_id
                LEFT JOIN materiale_cinturino ON materiale_cinturino.id = orologi_detail.materiale_cinturino_id

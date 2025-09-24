@@ -6,9 +6,9 @@ async function addProduct(req, res) {
     const product = req.body
 
     // Verifico che il prodotto sia stato inviato correttamente
-    if (!product) return res.status(400).json({ message: 'Product data is required' });
+    if (!product) return res.status(400).json({ message: 'I dati del prodotto sono obbligatori' });
     // Verifico che la categoria sia stata inserita
-    if (!product.categoria) return res.status(400).json({ message: 'Category is required' });
+    if (!product.categoria) return res.status(400).json({ message: 'La categoria è obbligatoria' });
 
     // uso una transazione per inserire tutto in modo atomico
     const conn = await connection.getConnection();
@@ -25,7 +25,7 @@ async function addProduct(req, res) {
             // se la categoria non esiste interrompo
             await conn.rollback();
             conn.release();
-            return res.status(400).json({ message: 'Category not found' });
+            return res.status(400).json({ message: 'Categoria non trovata' });
         }
 
         // Estraggo l'ID della categoria
@@ -232,14 +232,14 @@ async function addProduct(req, res) {
         conn.release();
 
         // Rispondo con un messaggio di successo e l'ID del nuovo prodotto
-        return res.status(201).json({ message: 'Product added successfully', productId: insertResults.insertId });
+        return res.status(201).json({ message: 'Prodotto aggiunto con successo!', productId: insertResults.insertId });
 
     } catch (err) {
         // se qualcosa va storto faccio rollback
         try { await conn.rollback(); } catch (e) { }
         conn.release();
         console.error("Error in addProduct:", err);
-        return res.status(500).json({ message: 'Internal server error' });
+        return res.status(500).json({ message: 'Errore interno del server' });
     }
 }
 

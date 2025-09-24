@@ -2,7 +2,7 @@ const connection = require('../database/db');
 
 const filtersPerCategoria = {
     // filtri comuni a (quasi) tutte le categorie
-    comuni: [
+    "comuni": [
         { key: 'brand', tab: 'brands', via: 'products.marca_id = brands.id' },
         { key: 'material', tab: 'materiale', via: 'products_detail.materiale_id = materiale.id' },
         { key: 'finish', tab: 'finitura', via: 'products_detail.finitura_id = finitura.id' },
@@ -13,46 +13,46 @@ const filtersPerCategoria = {
     ],
 
     // specifici per famiglia
-    orologi: [
+    "Orologi": [
         { key: 'materiale_cassa', tab: 'materiale_cassa', via: 'orologi_detail.materiale_cassa_id = materiale_cassa.id', need: 'orologi_detail' },
         { key: 'materiale_cinturino', tab: 'materiale_cinturino', via: 'orologi_detail.materiale_cinturino_id = materiale_cinturino.id', need: 'orologi_detail' },
         { key: 'tipologia_movimento', tab: 'tipologia_movimento', via: 'orologi_detail.tipologia_movimento_id = tipologia_movimento.id', need: 'orologi_detail' },
         { key: 'tipologia_cinturino', tab: 'tipologia_cinturino', via: 'orologi_detail.tipologia_cinturino_id = tipologia_cinturino.id', need: 'orologi_detail' },
     ],
 
-    cinturini: [
+    "Cinturini": [
         { key: 'misura_ansa', tab: 'misura_ansa', via: 'orologi_detail.misura_ansa_id = misura_ansa.id', need: 'orologi_detail' },
         { key: 'tipologia_cinturino', tab: 'tipologia_cinturino', via: 'orologi_detail.tipologia_cinturino_id = tipologia_cinturino.id', need: 'orologi_detail' },
     ],
 
-    gioielli: [
+    "Gioielli": [
         { key: 'pietre', tab: 'pietre', via: 'gioielli_detail.pietre_id = pietre.id', need: 'gioielli_detail' },
         { key: 'misura_anello', tab: 'misura_anello', via: 'gioielli_detail.misura_anello_id = misura_anello.id', need: 'gioielli_detail' },
         { key: 'modello_gioielleria', tab: 'modello_gioielleria', via: 'gioielli_detail.modello_gioielleria_id = modello_gioielleria.id', need: 'gioielli_detail' },
     ],
 
-    occhiali: [
+    "Occhiali": [
         { key: 'tipo_lenti', tab: 'tipo_lenti', via: 'occhiali_detail.tipo_lenti_id = tipo_lenti.id', need: 'occhiali_detail' },
     ],
 };
 
 // mappa delle categorie → quali gruppi includere
 const gruppiPerCategoria = {
-    orologi: ['comuni', 'Orologi'],
-    cinturini: ['comuni', 'Cinturini'],
-    anelli: ['comuni', 'Gioielli'],
-    bracciali: ['comuni', 'Gioielli'],
-    collane: ['comuni', 'Gioielli'],
-    ciondoli: ['comuni', 'Gioielli'],
-    orecchini: ['comuni', 'Gioielli'],
-    portachiavi: ['comuni', 'Gioielli'],
-    cavigliere: ['comuni', 'Gioielli'],
-    preziosi: ['comuni', 'Gioielli'],
-    montature_da_vista: ['comuni', 'Occhiali'],
-    occhiali_da_sole: ['comuni', 'Occhiali'],
-    outlet: ['comuni', 'Orologi', 'Cinturini', 'Gioielli', 'Occhiali'],
-    sveglie: ['comuni'],
-    orologi_da_parete: ['comuni']
+    "Orologi": ['comuni', 'Orologi'],
+    "Cinturini": ['comuni', 'Cinturini'],
+    "Anelli": ['comuni', 'Gioielli'],
+    "Bracciali": ['comuni', 'Gioielli'],
+    "Collane": ['comuni', 'Gioielli'],
+    "Ciondoli": ['comuni', 'Gioielli'],
+    "Orecchini": ['comuni', 'Gioielli'],
+    "Portachiavi": ['comuni', 'Gioielli'],
+    "Cavigliere": ['comuni', 'Gioielli'],
+    "Preziosi": ['comuni', 'Gioielli'],
+    "Montature da vista": ['comuni', 'Occhiali'],
+    "Occhiali da sole": ['comuni', 'Occhiali'],
+    "Outlet": ['comuni', 'Orologi', 'Cinturini', 'Gioielli', 'Occhiali'],
+    "Sveglie": ['comuni'],
+    "Orologi da parete": ['comuni']
 };
 
 function buildDistinctQuery({ categoria, key, tab, via, need }) {
@@ -89,7 +89,7 @@ function buildDistinctQuery({ categoria, key, tab, via, need }) {
     return { sql, params: [categoria], key };
 }
 
-// 👇 reso async e convertito alle promise
+// reso async e convertito alle promise
 const getCategoryFilters = async (req, res) => {
     const categoria = req.params.category_name || req.query.categoria;
 
@@ -110,11 +110,11 @@ const getCategoryFilters = async (req, res) => {
     ];
 
     try {
-        // 👇 eseguo tutte le query in parallelo con Promise.all e await
+        //  eseguo tutte le query in parallelo con Promise.all e await
         const parts = await Promise.all(
             filtriDaFare.map(async (def) => {
                 const queryDef = buildDistinctQuery({ categoria, ...def });
-                const [rows] = await connection.query(queryDef.sql, queryDef.params); // 👈 niente callback
+                const [rows] = await connection.query(queryDef.sql, queryDef.params); //  niente callback
                 return { key: def.key, values: rows.map(r => r.value) };
             })
         );
@@ -134,13 +134,13 @@ const getCategoryFilters = async (req, res) => {
     }
 };
 
-// 👇 reso async e convertito alle promise
+// reso async e convertito alle promise
 const showCategories = async (req, res) => {
 
     const sql = `select * from categories`;
 
     try {
-        const [results] = await connection.query(sql); // 👈 niente callback
+        const [results] = await connection.query(sql); // niente callback
         if (results.length === 0) {
             return res.status(404).json({ message: "Nessuna categoria trovata" });
         }
@@ -182,13 +182,13 @@ const showTableData = async (req, res) => {
         return res.status(400).json({ error: "Tabella non permessa" });
     }
 
-    const sql = "SELECT * FROM ??"; // 👈 usa ?? per i nomi di tabella
+    const sql = "SELECT * FROM ??"; // uso ?? per i nomi di tabella
     try {
         const [results] = await connection.query(sql, [tableName]);
         if (results.length === 0) {
             return res.status(404).json({ message: "Nessun dato trovato" });
         }
-        return res.json({ results });
+        return res.json({ tableName: tableName, tableData: results });
     } catch (err) {
         console.error("❌ Errore durante il recupero dei dati della tabella:", err);
         return res.status(500).json({ error: "Errore interno del server" });
