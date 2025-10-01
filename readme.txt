@@ -68,3 +68,14 @@ GET http://localhost:3000/api/products?categoria=Occhiali da sole&limit=40&offse
 
 Preziosi (modello)
 GET http://localhost:3000/api/products?categoria=Preziosi&limit=40&offset=0&modello_gioielleria=pendente
+
+// operazioni CRUD 
+
+*** DELETE *** 
+http://localhost:3000/api/products/deleteProduct/1636
+
+*** UPDATE ***
+http://localhost:3000/api/products/modifyProduct/1647
+
+*** POST ***
+http://localhost:3000/api/products/addProduct
